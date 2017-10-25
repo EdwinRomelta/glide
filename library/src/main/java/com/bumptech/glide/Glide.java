@@ -65,6 +65,8 @@ import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.load.resource.gif.GifDrawableEncoder;
 import com.bumptech.glide.load.resource.gif.GifFrameResourceDecoder;
 import com.bumptech.glide.load.resource.gif.StreamGifDecoder;
+import com.bumptech.glide.load.resource.gif2.GifDrawable2;
+import com.bumptech.glide.load.resource.gif2.GifResource2Decoder;
 import com.bumptech.glide.load.resource.transcode.BitmapBytesTranscoder;
 import com.bumptech.glide.load.resource.transcode.BitmapDrawableTranscoder;
 import com.bumptech.glide.load.resource.transcode.GifDrawableBytesTranscoder;
@@ -288,7 +290,10 @@ import java.util.Set;
             arrayPool);
     ByteBufferGifDecoder byteBufferGifDecoder =
         new ByteBufferGifDecoder(context, registry.getImageHeaderParsers(), bitmapPool, arrayPool);
-    ApngResourceDecoder apngResourceDecoder = new ApngResourceDecoder(context, bitmapPool, arrayPool);
+    ApngResourceDecoder apngResourceDecoder =
+        new ApngResourceDecoder(context, bitmapPool, arrayPool);
+    GifResource2Decoder gifResource2Decoder =
+        new GifResource2Decoder(registry.getImageHeaderParsers(), bitmapPool, arrayPool);
 
     registry.append(ByteBuffer.class, new ByteBufferEncoder())
         .append(InputStream.class, new StreamEncoder(arrayPool))
@@ -323,6 +328,8 @@ import java.util.Set;
         /* APNG */
         .append(Registry.BUCKET_APNG, InputStream.class, ApngDrawable.class, apngResourceDecoder)
         .append(ApngDrawable.class, new ApngResourceEncoder())
+        /* GIF 2 */
+        .append(Registry.BUCKET_GIF_2, InputStream.class, GifDrawable2.class, gifResource2Decoder)
         /* Drawables */
         .append(Uri.class, Drawable.class, new ResourceDrawableDecoder(context))
         /* Files */
